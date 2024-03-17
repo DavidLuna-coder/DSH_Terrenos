@@ -2,12 +2,15 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class ThrowObject : MonoBehaviour
 {
     [Header("References")]
     public Transform cam;
     public Transform attackPoint;
     public GameObject objectToThrow;
+    //public AudioSource audioSource;
+    
 
     [Header("Settings")]
     public int totalThrows;
@@ -22,6 +25,8 @@ public class ThrowObject : MonoBehaviour
     void Start()
     {
         canThrow = true;
+        //audioSource=GetComponent<AudioSource>();
+       // ProjectileAddon.onImpact+=ExplosionSound;
     }
 
     // Update is called once per frame
@@ -30,9 +35,9 @@ public class ThrowObject : MonoBehaviour
         if (!Input.GetKeyDown(throwKey) || !canThrow) return;
 
         Throw();
+        
 
     }
-
     private void Throw()
     {
         canThrow = false;
@@ -63,4 +68,10 @@ public class ThrowObject : MonoBehaviour
     {
         canThrow = true;
     }
+
+    /* void ExplosionSound()
+    {
+        Debug.Log("entra");
+        audioSource.Play();
+    }*/
 }

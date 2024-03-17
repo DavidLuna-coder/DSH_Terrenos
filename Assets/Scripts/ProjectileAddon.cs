@@ -1,18 +1,25 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class ProjectileAddon : MonoBehaviour
 {
-    // Start is called before the first frame update
+    /*public delegate void onHit();
+    public static event onHit onImpact;*/
+    [SerializeField] GameObject explode;
+
+    public float damage=1f;
     private Rigidbody rb;
     private bool targetHit;
     void Start()
     {
         rb = GetComponent<Rigidbody>();
+        
+ 
     }
 
-    // Update is called once per frame
+
     void Update()
     {
         
@@ -23,8 +30,34 @@ public class ProjectileAddon : MonoBehaviour
 
         Debug.Log("Hit " + other.gameObject.name);
         targetHit = true;
-        rb.isKinematic = true;
 
-        transform.SetParent(other.transform);
+       //if(onImpact!=null)onImpact();
+       
+        
+        Instantiate(explode,transform.position,transform.rotation);
+
+        Destroy(this.gameObject);
+     
+        /*rb.isKinematic = true;
+
+        transform.SetParent(other.transform);*/
+    }
+
+
+    private void OnTriggerEnter(Collider other)
+    {
+
+        if(targetHit) return;
+
+        Debug.Log("Hit " + other.gameObject.name);
+        targetHit = true;
+
+        
+        other.SendMessage("hited",damage, SendMessageOptions.DontRequireReceiver );
+        Instantiate(explode,transform.position,transform.rotation);
+
+        Destroy(this.gameObject);
+
+
     }
 }
